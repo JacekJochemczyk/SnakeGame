@@ -51,9 +51,9 @@ class Program
 
         string obstacle = "*";
 
-        int obstacleXpos = randomnummer.Next(1, screenwidth);
-
-        int obstacleYpos = randomnummer.Next(1, screenheight);
+        // Losuje bezpiecznie od 1 do szerokość-2 (czyli omija ściany)
+        int obstacleXpos = randomnummer.Next(1, screenwidth - 1);
+        int obstacleYpos = randomnummer.Next(1, screenheight - 1);
 
         while (true)
 
