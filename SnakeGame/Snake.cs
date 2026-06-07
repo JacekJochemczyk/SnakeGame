@@ -167,40 +167,29 @@ class Program
 
 
 
-            ConsoleKeyInfo info = Console.ReadKey();
-
-            //Game Logic
-
-            switch (info.Key)
-
+            if (Console.KeyAvailable)
             {
+                ConsoleKeyInfo info = Console.ReadKey(true);
 
-                case ConsoleKey.UpArrow:
+                switch (info.Key)
+                {
+                    case ConsoleKey.UpArrow:
+                        if (movement != "DOWN") movement = "UP";
+                        break;
 
-                    movement = "UP";
+                    case ConsoleKey.DownArrow:
+                        if (movement != "UP") movement = "DOWN";
+                        break; 
 
-                    break;
+                    case ConsoleKey.LeftArrow:
+                        if (movement != "RIGHT") movement = "LEFT";
+                        break;
 
-                case ConsoleKey.DownArrow:
-
-                    movement = "DOWN";
-
-                    // ???
-
-                case ConsoleKey.LeftArrow:
-
-                    movement = "LEFT";
-
-                    break;
-
-                case ConsoleKey.RightArrow:
-
-                    movement = "RIGHT";
-
-                    break;
-
+                    case ConsoleKey.RightArrow:
+                        if (movement != "LEFT") movement = "RIGHT";
+                        break;
+                }
             }
-
             if (movement == "UP")
 
                 hoofd.yPos--;
@@ -217,18 +206,22 @@ class Program
 
                 hoofd.xPos++;
 
-            //Hindernis treffen
-
-            if (hoofd.xPos == obstacleXpos /* ?? */ == obstacleYpos)
-
+            if (hoofd.xPos == obstacleXpos && hoofd.yPos == obstacleYpos)
             {
-
                 score++;
+                obstacleXpos = randomnummer.Next(1, screenwidth - 1);
+                obstacleYpos = randomnummer.Next(1, screenheight - 1);
 
-                obstacleXpos = randomnummer.Next(1, screenwidth);
+                teljePositie.Insert(0, hoofd.yPos);
+                teljePositie.Insert(0, hoofd.xPos);
+            }
+            else
+            {
+                teljePositie.Insert(0, hoofd.yPos);
+                teljePositie.Insert(0, hoofd.xPos);
 
-                obstacleYpos = randomnummer.Next(1, screenheight);
-
+                teljePositie.RemoveAt(teljePositie.Count - 1);
+                teljePositie.RemoveAt(teljePositie.Count - 1);
             }
 
             teljePositie.Insert(0, hoofd.xPos);
