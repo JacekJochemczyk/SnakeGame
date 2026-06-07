@@ -21,14 +21,6 @@ class Program
 
         Random randomnummer = new Random();
 
-        pixel hoofd = new pixel();
-
-        hoofd.xpos = screenwidth / 2;
-
-        hoofd.ypos = screenheight / 2;
-
-        hoofd.schermkleur = ConsoleColor.Red;
-
         string movement = "RIGHT";
 
         List<int> telje = new List<int>();
@@ -59,9 +51,9 @@ class Program
 
         string obstacle = "*";
 
-        int obstacleXpos = randomnummer.Next(1, screenwidth);
-
-        int obstacleYpos = randomnummer.Next(1, screenheight);
+        // Losuje bezpiecznie od 1 do szerokość-2 (czyli omija ściany)
+        int obstacleXpos = randomnummer.Next(1, screenwidth - 1);
+        int obstacleYpos = randomnummer.Next(1, screenheight - 1);
 
         while (true)
 
@@ -129,7 +121,7 @@ class Program
 
             }
 
-            Console.ForegroundColor =  ConsoleColor.Yellow;
+            Console.ForegroundColor = ConsoleColor.Yellow;
 
             Console.WriteLine("Score: " + score);
 
@@ -167,21 +159,19 @@ class Program
 
 
 
-            ConsoleKeyInfo info = Console.ReadKey();
-
-            //Game Logic
-
-            switch (info.Key)
-
+            if (Console.KeyAvailable)
             {
+                ConsoleKeyInfo info = Console.ReadKey(true);
 
-                case ConsoleKey.UpArrow:
+                switch (info.Key)
+                {
+                    case ConsoleKey.UpArrow:
+                        if (movement != "DOWN") movement = "UP";
+                        break;
 
-                    movement = "UP";
-
-                    break;
-
-                case ConsoleKey.DownArrow:
+                    case ConsoleKey.DownArrow:
+                        if (movement != "UP") movement = "DOWN";
+                        break; 
 
                     movement = "DOWN";
 
@@ -193,14 +183,11 @@ class Program
 
                     break;
 
-                case ConsoleKey.RightArrow:
-
-                    movement = "RIGHT";
-
-                    break;
-
+                    case ConsoleKey.RightArrow:
+                        if (movement != "LEFT") movement = "RIGHT";
+                        break;
+                }
             }
-
             if (movement == "UP")
 
                 hoofd.yPos--;
@@ -219,16 +206,23 @@ class Program
 
             //Hindernis treffen
 
-            if (hoofd.xPos == obstacleXpos /* ?? */ == obstacleYpos)
+            if (hoofd.xPos == obstacleXpos && hoofd.yPos == obstacleYpos)
 
             {
-
                 score++;
+                obstacleXpos = randomnummer.Next(1, screenwidth - 1);
+                obstacleYpos = randomnummer.Next(1, screenheight - 1);
 
-                obstacleXpos = randomnummer.Next(1, screenwidth);
+                teljePositie.Insert(0, hoofd.yPos);
+                teljePositie.Insert(0, hoofd.xPos);
+            }
+            else
+            {
+                teljePositie.Insert(0, hoofd.yPos);
+                teljePositie.Insert(0, hoofd.xPos);
 
-                obstacleYpos = randomnummer.Next(1, screenheight);
-
+                teljePositie.RemoveAt(teljePositie.Count - 1);
+                teljePositie.RemoveAt(teljePositie.Count - 1);
             }
 
             teljePositie.Insert(0, hoofd.xPos);
