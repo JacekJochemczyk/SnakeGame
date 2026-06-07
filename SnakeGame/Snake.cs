@@ -21,14 +21,6 @@ class Program
 
         Random randomnummer = new Random();
 
-        pixel hoofd = new pixel();
-
-        hoofd.xpos = screenwidth / 2;
-
-        hoofd.ypos = screenheight / 2;
-
-        hoofd.schermkleur = ConsoleColor.Red;
-
         string movement = "RIGHT";
 
         List<int> telje = new List<int>();
@@ -181,9 +173,15 @@ class Program
                         if (movement != "UP") movement = "DOWN";
                         break; 
 
-                    case ConsoleKey.LeftArrow:
-                        if (movement != "RIGHT") movement = "LEFT";
-                        break;
+                    movement = "DOWN";
+
+                    // ???
+
+                case ConsoleKey.LeftArrow:
+
+                    movement = "LEFT";
+
+                    break;
 
                     case ConsoleKey.RightArrow:
                         if (movement != "LEFT") movement = "RIGHT";
@@ -206,7 +204,10 @@ class Program
 
                 hoofd.xPos++;
 
-            if (hoofd.xPos == obstacleXpos && hoofd.yPos == obstacleYpos)
+            //Hindernis treffen
+
+            if (hoofd.xPos == obstacleXpos /* ?? */ == obstacleYpos)
+
             {
                 score++;
                 obstacleXpos = randomnummer.Next(1, screenwidth - 1);
